@@ -52,3 +52,16 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session 
     if user is None:
         raise credentials_exception
     return user
+
+def get_current_user_optional(token: Annotated[str, Depends(OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False))], db: Session = Depends(database.get_db)):
+    if not token:
+        return None
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            return None
+    except JWTError:
+        return None
+    user = get_user_by_email(db, email=email)
+    return user

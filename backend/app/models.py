@@ -1,6 +1,7 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum, DateTime
 from sqlalchemy.orm import relationship
 import enum
+from datetime import datetime
 from .database import Base
 
 class RoleEnum(str, enum.Enum):
@@ -16,6 +17,15 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     role = Column(Enum(RoleEnum), default=RoleEnum.job_seeker)
+    
+    # Profile fields
+    full_name = Column(String, nullable=True)
+    bio = Column(String, nullable=True)
+    company_name = Column(String, nullable=True) # for recruiters
+    skills = Column(String, nullable=True) # for job seekers
+    mobile_number = Column(String, nullable=True)
+    portfolio_url = Column(String, nullable=True)
+    profile_picture_url = Column(String, nullable=True)
 
 class Job(Base):
     __tablename__ = "jobs"
@@ -28,6 +38,10 @@ class Job(Base):
     description = Column(String)
     tags = Column(String) # Comma separated for now
     is_startup = Column(Boolean, default=False)
+    job_type = Column(String, nullable=True)
+    experience_level = Column(String, nullable=True)
+    is_remote = Column(Boolean, default=False)
+    posted_at = Column(DateTime, default=datetime.utcnow)
     recruiter_id = Column(Integer, ForeignKey("users.id"))
 
     recruiter = relationship("User", backref="posted_jobs")
@@ -52,3 +66,26 @@ class Match(Base):
 
     user = relationship("User", backref="matches")
     job = relationship("Job", backref="matches")
+
+class Notification(Base):
+    __tablename__ = "notifications"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    message = Column(String)
+    is_read = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    user = relationship("User", backref="notifications")
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    match_id = Column(Integer, ForeignKey("matches.id"))
+    sender_id = Column(Integer, ForeignKey("users.id"))
+    content = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+    match = relationship("Match", backref="messages")
+    sender = relationship("User", backref="sent_messages")

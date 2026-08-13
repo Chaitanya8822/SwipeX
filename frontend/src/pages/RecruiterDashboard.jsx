@@ -1,115 +1,107 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { PlusCircle, Briefcase, Users, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { LayoutDashboard, Users, Heart, Briefcase, PlusCircle, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function RecruiterDashboard() {
-  const [jobs, setJobs] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [newJob, setNewJob] = useState({
-    title: '', company: '', location: '', salary_range: '', description: '', tags: '', is_startup: false
-  });
+  const [metrics, setMetrics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchMyJobs();
+    const fetchAnalytics = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:8005/analytics/dashboard', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setMetrics(res.data);
+      } catch (error) {
+        console.error("Failed to load analytics", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAnalytics();
   }, []);
 
-  const fetchMyJobs = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '/login';
-        return;
-      }
-      const res = await axios.get('http://localhost:8005/jobs/my-jobs', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setJobs(res.data);
-    } catch (err) {
-      console.error("Failed to fetch jobs", err);
-      if (err.response && err.response.status === 401) {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      }
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
     }
   };
 
-  const handlePostJob = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8005/jobs/', newJob, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setShowForm(false);
-      fetchMyJobs();
-    } catch (err) {
-      console.error("Failed to post job", err);
-      if (err.response && err.response.status === 401) {
-        alert("Your session has expired. Please log in again.");
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      } else {
-        alert("Failed to publish job. Please check your inputs.");
-      }
-    }
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-5xl mx-auto mt-8">
-      <div className="flex justify-between items-center mb-8">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      className="p-8 max-w-6xl mx-auto"
+    >
+      <div className="mb-8 flex justify-between items-end">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Recruiter Dashboard</h2>
-          <p className="text-gray-500 mt-1">Manage your job postings and review candidates.</p>
+          <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+            <LayoutDashboard className="text-blue-400" /> 
+            Recruiter Dashboard
+          </h1>
+          <p className="text-gray-400 mt-2">Overview of your active job postings and candidate pipeline.</p>
         </div>
-        <button 
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-sm flex items-center gap-2"
-        >
-          <PlusCircle size={20} />
-          {showForm ? 'Cancel' : 'Post New Job'}
-        </button>
       </div>
 
-      {showForm && (
-        <form onSubmit={handlePostJob} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <input type="text" placeholder="Job Title" required className="p-3 border rounded-xl" onChange={e => setNewJob({...newJob, title: e.target.value})} />
-            <input type="text" placeholder="Company" required className="p-3 border rounded-xl" onChange={e => setNewJob({...newJob, company: e.target.value})} />
-            <input type="text" placeholder="Location" required className="p-3 border rounded-xl" onChange={e => setNewJob({...newJob, location: e.target.value})} />
-            <input type="text" placeholder="Salary Range" className="p-3 border rounded-xl" onChange={e => setNewJob({...newJob, salary_range: e.target.value})} />
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
+      >
+        <motion.div variants={item} className="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 bg-blue-500/200/20 text-blue-400 rounded-xl flex items-center justify-center mb-4">
+            <Briefcase size={24} />
           </div>
-          <textarea placeholder="Job Description" required className="w-full p-3 border rounded-xl h-32" onChange={e => setNewJob({...newJob, description: e.target.value})} />
-          <input type="text" placeholder="Tags (comma separated)" className="w-full p-3 border rounded-xl" onChange={e => setNewJob({...newJob, tags: e.target.value})} />
-          
-          <button type="submit" className="w-full bg-green-600 text-white font-bold py-3 rounded-xl shadow">Publish Job</button>
-        </form>
-      )}
+          <h3 className="text-gray-400 font-medium mb-1">Active Jobs</h3>
+          <p className="text-3xl font-bold text-white">{metrics?.total_jobs || 0}</p>
+        </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {jobs.map(job => (
-          <div key={job.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-4">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
-                <Briefcase size={24} />
-              </div>
-              <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">{job.location}</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-1">{job.title}</h3>
-            <p className="text-gray-500 text-sm mb-6">{job.company}</p>
-            
-            <Link to={`/recruiter/swipe/${job.id}`} className="w-full bg-gray-50 hover:bg-blue-50 text-blue-600 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors border border-gray-200 hover:border-blue-200">
-              <Users size={18} /> Review Candidates <ChevronRight size={18} />
-            </Link>
+        <motion.div variants={item} className="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 bg-indigo-500/200/20 text-indigo-400 rounded-xl flex items-center justify-center mb-4">
+            <Users size={24} />
           </div>
-        ))}
-        {jobs.length === 0 && !showForm && (
-          <div className="col-span-full py-12 text-center text-gray-400 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-            <Briefcase size={48} className="mx-auto mb-4 opacity-50" />
-            <p className="text-lg font-medium">You haven't posted any jobs yet.</p>
+          <h3 className="text-gray-400 font-medium mb-1">Pipeline Applicants</h3>
+          <p className="text-3xl font-bold text-white">{metrics?.total_applicants || 0}</p>
+        </motion.div>
+
+        <motion.div variants={item} className="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 bg-rose-500/200/20 text-rose-400 rounded-xl flex items-center justify-center mb-4">
+            <Heart size={24} />
           </div>
-        )}
-      </div>
-    </div>
+          <h3 className="text-gray-400 font-medium mb-1">Total Matches</h3>
+          <p className="text-3xl font-bold text-white">{metrics?.total_matches || 0}</p>
+        </motion.div>
+
+        <motion.div variants={item} className="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 bg-green-500/200/20 text-green-400 rounded-xl flex items-center justify-center mb-4">
+            <TrendingUp size={24} />
+          </div>
+          <h3 className="text-gray-400 font-medium mb-1">Conversion Rate</h3>
+          <p className="text-3xl font-bold text-white">{metrics?.pipeline_conversion_rate || 0}%</p>
+        </motion.div>
+      </motion.div>
+
+    </motion.div>
   );
 }

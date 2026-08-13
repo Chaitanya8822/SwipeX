@@ -2,11 +2,22 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from . import models
 from .database import engine
-from .routers import auth, jobs, swipes, resume, matches
+from .routers import auth, jobs, swipes, resume, matches, analytics
+
+models.Base.metadata.create_all(bind=engine)
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from . import models
+from .database import engine
+from .routers import auth, jobs, swipes, resume, matches, analytics, notifications, messages
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="SwipeX API", description="Intelligent Job Discovery Platform API")
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Configure CORS
 origins = [
@@ -29,6 +40,9 @@ app.include_router(jobs.router)
 app.include_router(swipes.router)
 app.include_router(resume.router)
 app.include_router(matches.router)
+app.include_router(analytics.router)
+app.include_router(notifications.router)
+app.include_router(messages.router)
 
 @app.get("/")
 def read_root():

@@ -5,39 +5,39 @@ export default function JobCard({ job }) {
   const tags = job.tags ? job.tags.split(',') : [];
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden w-full max-w-sm mx-auto h-[550px] flex flex-col relative select-none">
+    <div className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-xl border border-white/10 overflow-hidden w-full max-w-sm mx-auto h-[650px] flex flex-col relative select-none">
       {/* Header Banner */}
-      <div className={`h-32 p-6 flex items-end ${job.is_startup ? 'bg-gradient-to-r from-purple-500 to-indigo-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'}`}>
-        <div className="bg-white p-3 rounded-2xl shadow-md transform translate-y-8">
-          <Building2 size={32} className={job.is_startup ? "text-indigo-600" : "text-blue-600"} />
+      <div className={`h-24 p-6 flex items-end ${job.is_startup ? 'bg-gradient-to-r from-purple-500 to-indigo-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'}`}>
+        <div className="bg-[#09090b]/80 backdrop-blur-xl border border-white/20 p-2.5 rounded-2xl shadow-2xl transform translate-y-8">
+          <Building2 size={28} className="text-white drop-shadow-lg" />
         </div>
       </div>
       
       {/* Content */}
       <div className="pt-12 p-6 flex-1 flex flex-col">
-        <h2 className="text-2xl font-bold text-gray-900 mb-1">{job.title}</h2>
-        <p className="text-lg text-gray-600 font-medium mb-4">{job.company}</p>
+        <h2 className="text-2xl font-bold text-white mb-1">{job.title}</h2>
+        <p className="text-lg text-gray-300 font-medium mb-4">{job.company}</p>
         
         <div className="space-y-3 mb-6">
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-gray-300">
             <MapPin size={18} className="mr-2 text-gray-400" />
             <span className="text-sm">{job.location}</span>
           </div>
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-gray-300">
             <DollarSign size={18} className="mr-2 text-gray-400" />
             <span className="text-sm font-semibold">{job.salary_range}</span>
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-          <h3 className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wider">About the role</h3>
-          <p className="text-gray-600 text-sm leading-relaxed mb-4">
+          <h3 className="text-sm font-semibold text-white mb-2 uppercase tracking-wider">About the role</h3>
+          <p className="text-gray-300 text-sm leading-relaxed mb-4">
             {job.description}
           </p>
           
           <div className="flex flex-wrap gap-2 mt-auto">
             {tags.map((tag, index) => (
-              <span key={index} className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium flex items-center">
+              <span key={index} className="px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-xs rounded-full font-medium flex items-center">
                 <Tag size={12} className="mr-1 opacity-50" />
                 {tag.trim()}
               </span>

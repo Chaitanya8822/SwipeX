@@ -39,6 +39,14 @@ def record_recruiter_swipe(job_id: int, candidate_id: int, is_right_swipe: bool,
         if not existing_match:
             new_match = models.Match(job_id=job_id, user_id=candidate_id)
             db.add(new_match)
+            
+            # Create a notification for the candidate
+            notification = models.Notification(
+                user_id=candidate_id,
+                message=f"It's a Match! {job.company} wants to connect with you for the {job.title} role."
+            )
+            db.add(notification)
+            
             db.commit()
             return {"status": "matched"}
     
