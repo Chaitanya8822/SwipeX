@@ -5,17 +5,26 @@ SwipeX is an **Intelligent Job Discovery Platform** that brings a modern, Tinder
 
 ## 📸 Screenshots
 
+### Authentication
 <div align="center">
-  <img src="docs/screenshots/media_1786683167436.png" width="45%" />
   <img src="docs/screenshots/media_1786683167451.png" width="45%" />
   <img src="docs/screenshots/media_1786683167459.png" width="45%" />
+</div>
+
+### Job Seeker Experience
+<div align="center">
+  <img src="docs/screenshots/media_1786683167436.png" width="45%" />
   <img src="docs/screenshots/media_1786683167462.png" width="45%" />
   <img src="docs/screenshots/media_1786683167464.png" width="45%" />
   <img src="docs/screenshots/media_1786683196950.png" width="45%" />
   <img src="docs/screenshots/media_1786683196952.png" width="45%" />
+</div>
+
+### Recruiter Experience
+<div align="center">
+  <img src="docs/screenshots/media_1786683197058.png" width="45%" />
   <img src="docs/screenshots/media_1786683196955.png" width="45%" />
   <img src="docs/screenshots/media_1786683197057.png" width="45%" />
-  <img src="docs/screenshots/media_1786683197058.png" width="45%" />
 </div>
 
 ## ✨ Features
