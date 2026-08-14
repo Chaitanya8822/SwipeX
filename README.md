@@ -2,6 +2,22 @@
 
 SwipeX is an **Intelligent Job Discovery Platform** that brings a modern, Tinder-like swiping experience to job hunting and recruiting. Built with a stunning **Dark Glassmorphism UI**, SwipeX makes finding your next career move—or your next star candidate—fast, intuitive, and beautiful.
 
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="docs/screenshots/media_1786683167436.png" width="45%" />
+  <img src="docs/screenshots/media_1786683167451.png" width="45%" />
+  <img src="docs/screenshots/media_1786683167459.png" width="45%" />
+  <img src="docs/screenshots/media_1786683167462.png" width="45%" />
+  <img src="docs/screenshots/media_1786683167464.png" width="45%" />
+  <img src="docs/screenshots/media_1786683196950.png" width="45%" />
+  <img src="docs/screenshots/media_1786683196952.png" width="45%" />
+  <img src="docs/screenshots/media_1786683196955.png" width="45%" />
+  <img src="docs/screenshots/media_1786683197057.png" width="45%" />
+  <img src="docs/screenshots/media_1786683197058.png" width="45%" />
+</div>
+
 ## ✨ Features
 
 - **Tinder-like Swiping:** Job seekers can swipe right to apply to jobs and left to pass. Recruiters swipe on candidates.
