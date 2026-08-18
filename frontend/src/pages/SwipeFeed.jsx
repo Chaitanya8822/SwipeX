@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TinderCard from 'react-tinder-card';
 import JobCard from '../components/JobCard';
-import { X, Check, Undo2, Search, Filter, Briefcase, MapPin, DollarSign, ChevronDown, Sparkles } from 'lucide-react';
+import { X, Check, Undo2, Search, Filter, Briefcase, MapPin, DollarSign, ChevronDown, Sparkles, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MOCK_JOBS = [
@@ -114,6 +114,25 @@ export default function SwipeFeed() {
       console.error('Failed to record swipe', err);
     }
   }
+
+  const saveJob = async (job) => {
+    if (!job) return;
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      
+      await fetch(`http://localhost:8005/jobs/${job.id}/save`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setLastDirection('saved');
+      swipe('up'); // visually move it out of the way
+    } catch (err) {
+      console.error('Failed to save job', err);
+    }
+  };
 
   const outOfFrame = (name) => {
     // Left screen
@@ -263,6 +282,12 @@ export default function SwipeFeed() {
           className="w-14 h-14 rounded-full bg-white/5 backdrop-blur-md shadow-xl shadow-black/50 border border-white/10 flex items-center justify-center text-gray-400 hover:scale-110 hover:text-blue-400 transition-all"
         >
           <Undo2 size={24} strokeWidth={2.5} />
+        </button>
+        <button 
+          onClick={() => saveJob(jobs[currentIndex])}
+          className="w-14 h-14 rounded-full bg-white/5 backdrop-blur-md shadow-xl shadow-black/50 border border-white/10 flex items-center justify-center text-gray-400 hover:scale-110 hover:text-yellow-400 transition-all"
+        >
+          <Bookmark size={24} strokeWidth={2.5} />
         </button>
         <button 
           onClick={() => swipe('right')}

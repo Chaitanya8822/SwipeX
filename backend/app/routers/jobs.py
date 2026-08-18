@@ -120,7 +120,7 @@ def get_recommended_jobs(
         
     unseen_jobs = query.all()
     
-    # Score unseen jobs
+    # Score unseen jobs and calculate competition level
     for job in unseen_jobs:
         score = 0
         if job.tags:
@@ -129,6 +129,19 @@ def get_recommended_jobs(
                 if tag in preference_tags:
                     score += preference_tags[tag]
         setattr(job, "recommendation_score", score)
+
+        # Calculate competition level based on right swipes
+        right_swipe_count = db.query(models.SwipeAction).filter(
+            models.SwipeAction.job_id == job.id,
+            models.SwipeAction.is_right_swipe == True
+        ).count()
+        
+        if right_swipe_count > 15:
+            setattr(job, "competition_level", "High")
+        elif right_swipe_count >= 5:
+            setattr(job, "competition_level", "Medium")
+        else:
+            setattr(job, "competition_level", "Low")
         
     # Sort by recommendation score descending
     unseen_jobs.sort(key=lambda j: getattr(j, "recommendation_score", 0), reverse=True)
@@ -173,3 +186,31 @@ def get_companies(db: Session = Depends(database.get_db)):
         })
         
     return companies
+
+@router.post("/{job_id}/save")
+def toggle_save_job(job_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+    if current_user.role.value != "job_seeker":
+        raise HTTPException(status_code=403, detail="Only job seekers can save jobs")
+        
+    existing_save = db.query(models.SavedJob).filter(
+        models.SavedJob.user_id == current_user.id,
+        models.SavedJob.job_id == job_id
+    ).first()
+    
+    if existing_save:
+        db.delete(existing_save)
+        db.commit()
+        return {"status": "removed"}
+    else:
+        new_save = models.SavedJob(user_id=current_user.id, job_id=job_id)
+        db.add(new_save)
+        db.commit()
+        return {"status": "saved"}
+
+@router.get("/saved", response_model=List[schemas.SavedJob])
+def get_saved_jobs(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+    if current_user.role.value != "job_seeker":
+        raise HTTPException(status_code=403, detail="Only job seekers can view saved jobs")
+        
+    saved_jobs = db.query(models.SavedJob).filter(models.SavedJob.user_id == current_user.id).order_by(models.SavedJob.saved_at.desc()).all()
+    return saved_jobs

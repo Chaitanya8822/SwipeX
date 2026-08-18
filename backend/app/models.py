@@ -57,6 +57,17 @@ class SwipeAction(Base):
     user = relationship("User", backref="swipes")
     job = relationship("Job", backref="swipes")
 
+class SavedJob(Base):
+    __tablename__ = "saved_jobs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    job_id = Column(Integer, ForeignKey("jobs.id"))
+    saved_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", backref="saved_jobs")
+    job = relationship("Job", backref="saved_by_users")
+
 class Match(Base):
     __tablename__ = "matches"
 

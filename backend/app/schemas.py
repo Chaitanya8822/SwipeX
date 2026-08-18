@@ -62,6 +62,7 @@ class Job(JobBase):
     id: int
     recruiter_id: int
     posted_at: datetime
+    competition_level: str | None = None
 
     class Config:
         from_attributes = True
@@ -73,6 +74,21 @@ class SwipeActionCreate(BaseModel):
 class SwipeAction(SwipeActionCreate):
     id: int
     user_id: int
+
+    class Config:
+        from_attributes = True
+
+class SavedJobBase(BaseModel):
+    job_id: int
+
+class SavedJobCreate(SavedJobBase):
+    pass
+
+class SavedJob(SavedJobBase):
+    id: int
+    user_id: int
+    saved_at: datetime
+    job: Job
 
     class Config:
         from_attributes = True

@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, HeartHandshake, Briefcase, Sparkles, Navigation, Building2, User } from 'lucide-react';
+import { LayoutDashboard, HeartHandshake, Briefcase, Sparkles, Navigation, Building2, User, Bookmark } from 'lucide-react';
 import axios from 'axios';
 
 export default function Sidebar() {
@@ -42,6 +42,7 @@ export default function Sidebar() {
   const jobSeekerLinks = [
     { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
     { name: 'Swipe Jobs', path: '/feed', icon: <Navigation size={20} /> },
+    { name: 'Saved Jobs', path: '/saved-jobs', icon: <Bookmark size={20} /> },
     { name: 'Companies', path: '/companies', icon: <Building2 size={20} /> },
     { name: 'Matches', path: '/matches', icon: <HeartHandshake size={20} /> },
     { name: 'AI Analyzer', path: '/analyze', icon: <Sparkles size={20} /> },
