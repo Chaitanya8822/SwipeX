@@ -7,7 +7,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
-  
+
   const [role, setRole] = useState(null);
   
   // Notification State
@@ -76,7 +76,7 @@ export default function Navbar() {
             <Link to="/" className={`text-xl font-bold lg:hidden text-white`}>SwipeX</Link>
           </div>
           <div className="flex items-center gap-4">
-            {role && (
+            {role && !isAuthPage && (
               <div className="flex items-center gap-4">
                 
                 {/* Notification Bell */}
@@ -140,7 +140,7 @@ export default function Navbar() {
                 </button>
               </div>
             )}
-            {!role && (
+            {(!role || isAuthPage) && (
               <div className="flex gap-3">
                 <Link to="/login" className="px-4 py-2 text-blue-400 font-medium border border-blue-500/30 rounded-lg hover:bg-blue-900/20 transition-colors shadow-sm">Login</Link>
                 <Link to="/register" className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-sm transition-colors">Sign Up</Link>

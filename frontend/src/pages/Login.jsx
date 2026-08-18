@@ -54,7 +54,7 @@ export default function Login() {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)] rounded-3xl overflow-hidden flex bg-[#09090b] shadow-2xl border border-white/5">
+    <div className="h-[calc(100vh-4rem)] rounded-3xl overflow-hidden flex bg-[#09090b] shadow-2xl border border-white/5">
       {/* Hero Section (Hidden on mobile, 50% width on desktop) */}
       <div className="hidden lg:flex flex-1 relative items-center justify-center bg-[#2A162B] overflow-hidden border-r border-purple-500/10">
         {/* Subtle gradient overlay to blend edges */}
