@@ -22,7 +22,7 @@ export default function Login() {
       params.append('username', email);
       params.append('password', password);
 
-      const response = await axios.post('http://localhost:8005/auth/login', params, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/login`, params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       

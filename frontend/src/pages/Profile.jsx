@@ -29,7 +29,7 @@ export default function Profile() {
           navigate('/login');
           return;
         }
-        const res = await axios.get('http://localhost:8005/auth/profile', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProfile(res.data);
@@ -64,7 +64,7 @@ export default function Profile() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:8005/auth/profile/image', formData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/profile/image`, formData, {
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -85,7 +85,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.put('http://localhost:8005/auth/profile', formData, {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/profile`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProfile(res.data);

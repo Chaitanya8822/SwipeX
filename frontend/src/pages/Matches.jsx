@@ -18,7 +18,7 @@ export default function Matches() {
           setIsRecruiter(payload.role === 'recruiter');
         }
 
-        const res = await axios.get('http://localhost:8005/matches/', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/matches/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMatches(res.data);

@@ -20,13 +20,13 @@ export default function Chat() {
         if (!token) return navigate('/login');
         
         // Get user info
-        const userRes = await axios.get('http://localhost:8005/auth/profile', {
+        const userRes = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCurrentUser(userRes.data);
 
         // Fetch messages
-        const msgRes = await axios.get(`http://localhost:8005/messages/${matchId}`, {
+        const msgRes = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/messages/${matchId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setMessages(msgRes.data);
@@ -42,7 +42,7 @@ export default function Chat() {
     const interval = setInterval(() => {
       const token = localStorage.getItem('token');
       if (token) {
-        axios.get(`http://localhost:8005/messages/${matchId}`, {
+        axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/messages/${matchId}`, {
           headers: { Authorization: `Bearer ${token}` }
         }).then(res => {
           setMessages(res.data);
@@ -63,7 +63,7 @@ export default function Chat() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:8005/messages/', 
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/messages/`, 
         { match_id: matchId, content: newMessage },
         { headers: { Authorization: `Bearer ${token}` } }
       );

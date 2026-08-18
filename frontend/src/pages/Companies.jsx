@@ -23,7 +23,7 @@ export default function Companies() {
     const fetchCompanies = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8005/jobs/companies/', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/companies/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

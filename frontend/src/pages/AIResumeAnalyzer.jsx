@@ -47,7 +47,7 @@ export default function AIResumeAnalyzer() {
     const fetchJobs = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8005/jobs/', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setJobs(res.data);
@@ -74,7 +74,7 @@ export default function AIResumeAnalyzer() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:8005/resume/analyze', formData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/resume/analyze`, formData, {
         headers: { 
           'Authorization': `Bearer ${token}`
         }

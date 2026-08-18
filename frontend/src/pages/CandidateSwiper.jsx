@@ -29,7 +29,7 @@ export default function CandidateSwiper() {
     const fetchCandidates = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8005/jobs/${jobId}/candidates`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/${jobId}/candidates`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -55,7 +55,7 @@ export default function CandidateSwiper() {
       if (!token) return;
       
       const isRightSwipe = direction === 'right';
-      const res = await axios.post('http://localhost:8005/swipes/recruiter', null, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/swipes/recruiter`, null, {
         params: {
           job_id: jobId,
           candidate_id: candidate.id,

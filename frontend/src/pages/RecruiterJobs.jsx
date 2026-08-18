@@ -28,7 +28,7 @@ export default function RecruiterJobs() {
   const fetchJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:8005/jobs/my-jobs', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/my-jobs`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setJobs(res.data);
@@ -51,7 +51,7 @@ export default function RecruiterJobs() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8005/jobs/', formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowModal(false);

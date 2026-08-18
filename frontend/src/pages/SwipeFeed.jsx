@@ -44,7 +44,7 @@ export default function SwipeFeed() {
         if (filters.jobType !== 'all') params.append('job_type', filters.jobType);
         if (filters.salaryRange !== 'all') params.append('salary_range', filters.salaryRange);
         
-        const response = await fetch(`http://localhost:8005/jobs/recommended?${params.toString()}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/recommended?${params.toString()}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -99,7 +99,7 @@ export default function SwipeFeed() {
       if (!token) return;
       
       const isRightSwipe = direction === 'right';
-      await fetch('http://localhost:8005/swipes/', {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/swipes/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export default function SwipeFeed() {
       const token = localStorage.getItem('token');
       if (!token) return;
       
-      await fetch(`http://localhost:8005/jobs/${job.id}/save`, {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/${job.id}/save`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

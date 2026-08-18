@@ -14,7 +14,7 @@ export default function SavedJobs() {
   const fetchSavedJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:8005/jobs/saved', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/saved`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSavedJobs(res.data);
@@ -28,7 +28,7 @@ export default function SavedJobs() {
   const removeSavedJob = async (jobId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:8005/jobs/${jobId}/save`, {}, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/${jobId}/save`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSavedJobs(savedJobs.filter(item => item.job.id !== jobId));
@@ -41,7 +41,7 @@ export default function SavedJobs() {
     try {
       const token = localStorage.getItem('token');
       // 1. Record the swipe action (apply or pass)
-      await axios.post('http://localhost:8005/swipes/', {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/swipes/`, {
         job_id: jobId,
         is_right_swipe: isApply
       }, {
@@ -49,7 +49,7 @@ export default function SavedJobs() {
       });
       
       // 2. Remove it from saved jobs in DB
-      await axios.post(`http://localhost:8005/jobs/${jobId}/save`, {}, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/${jobId}/save`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       

@@ -30,12 +30,12 @@ export default function Register() {
         company_name: role === 'recruiter' ? companyName : null,
       };
 
-      await axios.post('http://localhost:8005/auth/register', payload);
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/register`, payload);
       
       const params = new URLSearchParams();
       params.append('username', email);
       params.append('password', password);
-      const loginRes = await axios.post('http://localhost:8005/auth/login', params, {
+      const loginRes = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/login`, params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       

@@ -39,7 +39,7 @@ export default function Navbar() {
 
   const fetchNotifications = async (token) => {
     try {
-      const res = await axios.get('http://localhost:8005/notifications/', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/notifications/`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNotifications(res.data);
@@ -51,7 +51,7 @@ export default function Navbar() {
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8005/notifications/${id}/read`, {}, {
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/notifications/${id}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNotifications(notifications.map(n => n.id === id ? { ...n, is_read: true } : n));

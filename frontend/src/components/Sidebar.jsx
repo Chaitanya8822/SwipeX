@@ -17,7 +17,7 @@ export default function Sidebar() {
         setRole(payload.role);
         
         // Fetch user profile to get the full name and picture
-        axios.get('http://localhost:8005/auth/profile', {
+        axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         }).then(res => {
           if (res.data.full_name) {
