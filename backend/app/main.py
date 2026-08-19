@@ -21,10 +21,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Configure CORS
 origins = [
-    "http://localhost:5173", # Vite default
-    "http://127.0.0.1:5173",
-    "http://localhost:3005", # SwipeX Specific Port
-    "http://127.0.0.1:3005",
+    "*"
 ]
 
 app.add_middleware(

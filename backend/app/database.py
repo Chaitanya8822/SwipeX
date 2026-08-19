@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./swipex.db"
+import os
+
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./swipex.db")
 # For production:
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
