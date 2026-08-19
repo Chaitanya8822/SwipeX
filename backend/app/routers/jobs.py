@@ -214,3 +214,26 @@ def get_saved_jobs(db: Session = Depends(database.get_db), current_user: models.
         
     saved_jobs = db.query(models.SavedJob).filter(models.SavedJob.user_id == current_user.id).order_by(models.SavedJob.saved_at.desc()).all()
     return saved_jobs
+
+@router.get("/applied", response_model=List[schemas.AppliedJob])
+def get_applied_jobs(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+    if current_user.role.value != "job_seeker":
+        raise HTTPException(status_code=403, detail="Only job seekers can view applied jobs")
+        
+    swipes = db.query(models.SwipeAction).filter(
+        models.SwipeAction.user_id == current_user.id,
+        models.SwipeAction.is_right_swipe == True
+    ).all()
+    
+    applied_jobs = []
+    for swipe in swipes:
+        job = swipe.job
+        # check if match exists
+        match = db.query(models.Match).filter(
+            models.Match.user_id == current_user.id,
+            models.Match.job_id == job.id
+        ).first()
+        status = "Matched" if match else "Applied"
+        applied_jobs.append({"job": job, "status": status})
+        
+    return applied_jobs

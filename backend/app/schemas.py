@@ -93,6 +93,13 @@ class SavedJob(SavedJobBase):
     class Config:
         from_attributes = True
 
+class AppliedJob(BaseModel):
+    job: Job
+    status: str
+
+    class Config:
+        from_attributes = True
+
 from typing import List
 
 class ResumeAnalysisResult(BaseModel):

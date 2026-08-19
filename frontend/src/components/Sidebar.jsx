@@ -43,6 +43,7 @@ export default function Sidebar() {
     { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
     { name: 'Swipe Jobs', path: '/feed', icon: <Navigation size={20} /> },
     { name: 'Saved Jobs', path: '/saved-jobs', icon: <Bookmark size={20} /> },
+    { name: 'Applied Jobs', path: '/applied-jobs', icon: <Briefcase size={20} /> },
     { name: 'Companies', path: '/companies', icon: <Building2 size={20} /> },
     { name: 'Matches', path: '/matches', icon: <HeartHandshake size={20} /> },
     { name: 'AI Analyzer', path: '/analyze', icon: <Sparkles size={20} /> },

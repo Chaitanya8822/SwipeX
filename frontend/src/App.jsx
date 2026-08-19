@@ -13,6 +13,7 @@ import Companies from './pages/Companies';
 import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import SavedJobs from './pages/SavedJobs';
+import AppliedJobs from './pages/AppliedJobs';
 import RecruiterJobs from './pages/RecruiterJobs';
 import Chat from './pages/Chat';
 
@@ -32,6 +33,7 @@ function AppContent() {
             <Route path="/register" element={<Register />} />
             <Route path="/feed" element={<SwipeFeed />} />
             <Route path="/saved-jobs" element={<SavedJobs />} />
+            <Route path="/applied-jobs" element={<AppliedJobs />} />
             <Route path="/analyze" element={<AIResumeAnalyzer />} />
             <Route path="/recruiter" element={<RecruiterDashboard />} />
             <Route path="/recruiter/jobs" element={<RecruiterJobs />} />
