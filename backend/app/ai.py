@@ -1,7 +1,7 @@
 from typing import List, Dict
 try:
     import spacy
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_md")
 except:
     spacy = None
     nlp = None # Fallback handling if model fails to load
