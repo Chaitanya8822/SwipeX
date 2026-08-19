@@ -14,7 +14,7 @@ export default function AppliedJobs() {
   const fetchAppliedJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:8005/jobs/applied', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:8005'}/jobs/applied`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAppliedJobs(res.data);
