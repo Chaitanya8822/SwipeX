@@ -1,5 +1,7 @@
 # SwipeX 🚀
 
+**🌍 [Live Demo: swipex-eight.vercel.app](https://swipex-eight.vercel.app/)**
+
 SwipeX is an **Intelligent Job Discovery Platform** that brings a modern, Tinder-like swiping experience to job hunting and recruiting. Built with a stunning **Dark Glassmorphism UI**, SwipeX makes finding your next career move—or your next star candidate—fast, intuitive, and beautiful.
 
 
